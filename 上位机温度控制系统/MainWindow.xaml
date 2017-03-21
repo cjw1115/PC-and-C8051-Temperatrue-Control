@@ -7,6 +7,27 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBox x:Name="tbData"></TextBox>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="1">
+            <ComboBox x:Name="cbPortname" SelectionChanged="cbPortname_Selected" 
+                      VerticalAlignment="Center" Width="100">
+
+                <ComboBoxItem Content="COM1"></ComboBoxItem>
+                <ComboBoxItem Content="COM2"></ComboBoxItem>
+                <ComboBoxItem Content="COM3"></ComboBoxItem>
+                <ComboBoxItem Content="COM4"></ComboBoxItem>
+                <ComboBoxItem Content="COM5"></ComboBoxItem>
+                <ComboBoxItem Content="COM6"></ComboBoxItem>
+            </ComboBox>
+            <Button x:Name="btnPortControl" 
+                    Width="100"
+                    VerticalAlignment="Center"
+                Click="btnPortControl_Click" Content="Open"></Button>
+        </StackPanel>
     </Grid>
 </Window>
