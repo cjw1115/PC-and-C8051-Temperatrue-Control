@@ -19,13 +19,20 @@ namespace 上位机温度控制系统
     /// </summary>
     public partial class MainPage : Window
     {
+        public static MainPageVM VM;
         public static Polyline TempLine;
         public MainPage()
         {
             InitializeComponent();
+            VM = this.DataContext as MainPageVM;
             TempLine = tempLine;
             this.canvas.SizeChanged += Canvas_SizeChanged;
+            this.Loaded += MainPage_Loaded;
+        }
 
+        private void MainPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            initCanvans();
         }
 
         private void Canvas_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -34,6 +41,22 @@ namespace 上位机温度控制系统
         }
         void initCanvans()
         {
+            var solidBrush = new SolidColorBrush(Colors.Blue);
+            var height=canvas.ActualHeight / 100;
+            for (int i = 0; i < 100; i++)
+            {
+                var line = new Polyline();
+                line.Stroke = solidBrush;
+                line.StrokeThickness = 0.3;
+
+                line.Points = new PointCollection();
+                for (int j = 0; j < 2; j++)
+                {
+                    line.Points.Add( new Point(0, height * i));
+                    line.Points.Add(new Point(5, height * i));
+                }
+                this.canvas.Children.Add(line);
+            }
         }
         //默认显示100个点
 
@@ -58,9 +81,10 @@ namespace 上位机温度控制系统
             int count = 0;
             if (points == null || points.Count == 0)
                 return;
+            width = canvas.Width / MainPage.VM.TempCellectionCount ;
             foreach (var item in points)
             {
-                collection.Add(new Point(count * width, 200 - item*2));
+                collection.Add(new Point(count * width, canvas.ActualHeight- canvas.ActualHeight* item /100));
                 count++;
             }
             MainPage.TempLine.Points = collection;

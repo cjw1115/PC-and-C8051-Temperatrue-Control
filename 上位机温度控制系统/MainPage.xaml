@@ -7,7 +7,8 @@
         xmlns:converter="clr-namespace:上位机温度控制系统.Converter"
       mc:Ignorable="d"
       Title="MainPage"
-      DataContext="{StaticResource  MainPageVM}" Height="500" Width="800"
+      
+      DataContext="{StaticResource  MainPageVM}" Height="700" Width="1350" ResizeMode="CanMinimize" WindowStartupLocation="Manual" 
       >
     <Window.Resources>
         <converter:IsContinuesExcuteConverter x:Key="IsContinuesExcuteConverter"></converter:IsContinuesExcuteConverter>
@@ -19,86 +20,91 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock VerticalAlignment="Center" Text="端口号:"></TextBlock>
-                <ComboBox ItemsSource="{Binding ComList,Mode=OneWay}" Width="50" SelectedValue="{Binding CurrentCom,Mode=OneWayToSource}">
-                </ComboBox>
-                <TextBlock VerticalAlignment="Center" Text="波特率:"></TextBlock>
-                <TextBox Width="50" Text="{Binding BaudRate,Mode=TwoWay}">
-                </TextBox>
-                <Button Command="{Binding OpenCommand}" 
+            <Border BorderThickness="2" BorderBrush="CadetBlue" Margin="4" Padding="4">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" Text="端口号:"></TextBlock>
+                    <ComboBox ItemsSource="{Binding ComList,Mode=OneWay}" Width="50" SelectedValue="{Binding CurrentCom,Mode=OneWayToSource}">
+                    </ComboBox>
+                    <TextBlock VerticalAlignment="Center" Text="波特率:"></TextBlock>
+                    <TextBox Width="50" Text="{Binding BaudRate,Mode=TwoWay}">
+                    </TextBox>
+                    <Button Command="{Binding OpenCommand}" 
                     Content="{Binding IsOpen,Mode=OneWay,Converter={StaticResource IsOpenConverter}}"></Button>
-            </StackPanel>
+                    <TextBlock VerticalAlignment="Center" Text="填充码:"></TextBlock>
+                    <TextBox Width="50" Text="{Binding DefaultFillField,Mode=TwoWay}">
+                    </TextBox>
+                </StackPanel>
+            </Border>
 
-            <StackPanel Orientation="Horizontal">
-                <TextBlock VerticalAlignment="Center" Text="填充码:"></TextBlock>
-                <TextBox Width="50" Text="{Binding DefaultFillField,Mode=TwoWay}">
-                </TextBox>
-            </StackPanel>
-            <StackPanel Margin="4" >
-                <TextBlock Text="发送端："></TextBlock>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Background="AliceBlue" Text="同步字" TextAlignment="Center"></TextBlock>
-                    <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding InputCommand.SyncCode1,Mode=TwoWay}"></TextBox>
-                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding InputCommand.SyncCode2,Mode=TwoWay}"></TextBox>
-                    <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding InputCommand.SyncCode3,Mode=TwoWay}"></TextBox>
-                    <TextBlock Grid.Row="0" Grid.Column="3" Background="AntiqueWhite" Text="操作码" TextAlignment="Center"></TextBlock>
-                    <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding InputCommand.ControlCode,Mode=TwoWay}"></TextBox>
-                    <TextBlock Grid.Row="0" Grid.Column="4" Background="#FF9DE7EB" Text="操作数1" TextAlignment="Center"/>
-                    <TextBox Grid.Row="1" Grid.Column="4" Text="{Binding InputCommand.ControlVal1,Mode=TwoWay}"></TextBox>
+            <Border BorderThickness="2" BorderBrush="CadetBlue" Margin="4" Padding="4">
+                <StackPanel Margin="4" >
+                    <TextBlock Text="发送端："></TextBlock>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Background="AliceBlue" Text="同步字" TextAlignment="Center"></TextBlock>
+                        <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding InputCommand.SyncCode1,Mode=TwoWay}"></TextBox>
+                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding InputCommand.SyncCode2,Mode=TwoWay}"></TextBox>
+                        <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding InputCommand.SyncCode3,Mode=TwoWay}"></TextBox>
+                        <TextBlock Grid.Row="0" Grid.Column="3" Background="AntiqueWhite" Text="操作码" TextAlignment="Center"></TextBlock>
+                        <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding InputCommand.ControlCode,Mode=TwoWay}"></TextBox>
+                        <TextBlock Grid.Row="0" Grid.Column="4" Background="#FF9DE7EB" Text="操作数1" TextAlignment="Center"/>
+                        <TextBox Grid.Row="1" Grid.Column="4" Text="{Binding InputCommand.ControlVal1,Mode=TwoWay}"></TextBox>
 
-                    <TextBlock Grid.Row="0" Grid.Column="5" Background="#FF9DE7EB" Text="操作数2" TextAlignment="Center"/>
-                    <TextBox Grid.Row="1" Grid.Column="5" Text="{Binding InputCommand.ControlVal2,Mode=TwoWay}"></TextBox>
-                </Grid>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Button Content="Excute" Command="{Binding ExcuteCommand}" CommandParameter="False"></Button>
-                    <Button Grid.Column="1" Content="{Binding IsContinuesExcute,Converter={StaticResource IsContinuesExcuteConverter}}" Command="{Binding ContinuesExcuteCommand}" ></Button>
-                </Grid>
-            </StackPanel>
-            <StackPanel Margin="4" >
-                <TextBlock Text="接收端："></TextBlock>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Background="AliceBlue" Text="同步字" TextAlignment="Center"></TextBlock>
-                    <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding OutputCommand.SyncCode1,Mode=TwoWay}"></TextBox>
-                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding OutputCommand.SyncCode2,Mode=TwoWay}"></TextBox>
-                    <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding OutputCommand.SyncCode3,Mode=TwoWay}"></TextBox>
-                    <TextBlock Grid.Row="0" Grid.Column="3" Background="AntiqueWhite" Text="操作码" TextAlignment="Center"></TextBlock>
-                    <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding OutputCommand.ControlCode,Mode=TwoWay}"></TextBox>
-                    <TextBlock Grid.Row="0" Grid.Column="4" Background="#FF9DE7EB" Text="操作数1" TextAlignment="Center"/>
-                    <TextBox Grid.Row="1" Grid.Column="4" Text="{Binding OutputCommand.ControlVal1,Mode=TwoWay}"></TextBox>
+                        <TextBlock Grid.Row="0" Grid.Column="5" Background="#FF9DE7EB" Text="操作数2" TextAlignment="Center"/>
+                        <TextBox Grid.Row="1" Grid.Column="5" Text="{Binding InputCommand.ControlVal2,Mode=TwoWay}"></TextBox>
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Button Content="Excute" Command="{Binding ExcuteCommand}" CommandParameter="False"></Button>
+                        <Button Grid.Column="1" Content="{Binding IsContinuesExcute,Converter={StaticResource IsContinuesExcuteConverter}}" Command="{Binding ContinuesExcuteCommand}" ></Button>
+                    </Grid>
+                </StackPanel>
+            </Border>
+            <Border BorderThickness="2" BorderBrush="CadetBlue" Margin="4" Padding="4">
+                <StackPanel Margin="4" >
+                    <TextBlock Text="接收端："></TextBlock>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Background="AliceBlue" Text="同步字" TextAlignment="Center"></TextBlock>
+                        <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding OutputCommand.SyncCode1,Mode=TwoWay}"></TextBox>
+                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding OutputCommand.SyncCode2,Mode=TwoWay}"></TextBox>
+                        <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding OutputCommand.SyncCode3,Mode=TwoWay}"></TextBox>
+                        <TextBlock Grid.Row="0" Grid.Column="3" Background="AntiqueWhite" Text="操作码" TextAlignment="Center"></TextBlock>
+                        <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding OutputCommand.ControlCode,Mode=TwoWay}"></TextBox>
+                        <TextBlock Grid.Row="0" Grid.Column="4" Background="#FF9DE7EB" Text="操作数1" TextAlignment="Center"/>
+                        <TextBox Grid.Row="1" Grid.Column="4" Text="{Binding OutputCommand.ControlVal1,Mode=TwoWay}"></TextBox>
 
-                    <TextBlock Grid.Row="0" Grid.Column="5" Background="#FF9DE7EB" Text="操作数2" TextAlignment="Center"/>
-                    <TextBox Grid.Row="1" Grid.Column="5" Text="{Binding OutputCommand.ControlVal2,Mode=TwoWay}"></TextBox>
-                </Grid>
-            </StackPanel>
+                        <TextBlock Grid.Row="0" Grid.Column="5" Background="#FF9DE7EB" Text="操作数2" TextAlignment="Center"/>
+                        <TextBox Grid.Row="1" Grid.Column="5" Text="{Binding OutputCommand.ControlVal2,Mode=TwoWay}"></TextBox>
+                    </Grid>
+                </StackPanel>
+            </Border>
+            
         </StackPanel>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
@@ -109,82 +115,164 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="实时温度："></TextBlock>
-                    <TextBlock Width="50" Text="{Binding ReadTempInt,Mode=OneWay}"   TextAlignment="Center" Background="Black" Foreground="Red"></TextBlock>
-                    <TextBlock Text="." TextAlignment="Center" ></TextBlock>
-                    <TextBlock Width="50" Text="{Binding ReadTempFloat,Mode=OneWay}" TextAlignment="Center" Background="Black" Foreground="Red"></TextBlock>
+            <Border Grid.Row="0" Grid.Column="0" BorderThickness="2" BorderBrush="CadetBlue" Margin="4" Padding="4">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="4">
+                        <TextBlock Text="实时温度："></TextBlock>
+                        <TextBlock Width="50" Text="{Binding ReadTempInt,Mode=OneWay}"   TextAlignment="Center" Background="Black" Foreground="Red"></TextBlock>
+                        <TextBlock Text="." TextAlignment="Center" ></TextBlock>
+                        <TextBlock Width="50" Text="{Binding ReadTempFloat,Mode=OneWay}" TextAlignment="Center" Background="Black" Foreground="Red"></TextBlock>
 
+                    </StackPanel>
+                    <Button Margin="4" Content="温度查询" Command="{Binding QueryTempCommand}"></Button>
+                    <StackPanel Orientation="Horizontal" Margin="4">
+                        <TextBlock Text="设置温度："></TextBlock>
+                        <TextBox Width="50" Text="{Binding SetTempInt,Mode=TwoWay}"   TextAlignment="Center" Background="Black" Foreground="Red"></TextBox>
+                        <TextBlock Text="." TextAlignment="Center" ></TextBlock>
+                        <TextBox Width="50" Text="{Binding SetTempFloat,Mode=TwoWay}" TextAlignment="Center" Background="Black" Foreground="Red"></TextBox>
+                    </StackPanel>
+                    <Grid Margin="4">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Content="-" Command="{Binding DownTempCommand}"/>
+                        <Button Grid.Column="1" Content="设定" Command="{Binding SetTempCommand}"/>
+                        <Button Grid.Column="2" Content="+" Command="{Binding UpTempCommand}"/>
+                    </Grid>
                 </StackPanel>
-                <Button Content="温度查询" Command="{Binding QueryTempCommand}"></Button>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="设置温度："></TextBlock>
-                    <TextBox Width="50" Text="{Binding SetTempInt,Mode=TwoWay}"   TextAlignment="Center" Background="Black" Foreground="Red"></TextBox>
-                    <TextBlock Text="." TextAlignment="Center" ></TextBlock>
-                    <TextBox Width="50" Text="{Binding SetTempFloat,Mode=TwoWay}" TextAlignment="Center" Background="Black" Foreground="Red"></TextBox>
+            </Border>
+            <Border Grid.Row="1" Grid.Column="0" BorderThickness="2" BorderBrush="CadetBlue" Margin="4" Padding="4">
+                <StackPanel Grid.Row="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Vertical">
+                            <Border BorderThickness="2" BorderBrush="CadetBlue" Margin="4" Padding="4">
+                                <StackPanel>
+                                    <StackPanel Margin="4" Orientation="Horizontal">
+                                        <TextBlock>启动时间</TextBlock>
+                                        <TextBox Width="50" InputScope="Number" Text="{Binding DelayStartMin,Mode=TwoWay}"></TextBox>
+                                        <TextBlock>:</TextBlock>
+                                        <TextBox Width="50" InputScope="Number" Text="{Binding DelayStartSec,Mode=TwoWay}"></TextBox>
+                                    </StackPanel>
+                                    <Button Margin="4" Content="延时启动" Command="{Binding DelayStartCommand}"></Button>
+                                </StackPanel>
+                            </Border>
+                            <Border BorderThickness="2" BorderBrush="CadetBlue" Margin="4" Padding="4">
+                                <StackPanel>
+                                    <StackPanel Margin="4" Orientation="Horizontal">
+                                        <TextBlock>停止时间</TextBlock>
+                                        <TextBox Width="50" InputScope="Number" Text="{Binding DelayStopMin,Mode=TwoWay}"></TextBox>
+                                        <TextBlock>:</TextBlock>
+                                        <TextBox Width="50" InputScope="Number" Text="{Binding DelayStopSec,Mode=TwoWay}"></TextBox>
+                                    </StackPanel>
+                                    <Button Margin="4" Content="延时停止" Command="{Binding DelayStopCommand}"></Button>
+
+                                </StackPanel>
+                            </Border>
+
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Grid.Column="1">
+                            <Border BorderThickness="2" BorderBrush="CadetBlue" Margin="4" Padding="4">
+                                <StackPanel>
+                                    <StackPanel Margin="4" Orientation="Horizontal">
+                                        <TextBlock>剩余启动时间：</TextBlock>
+                                        <TextBlock Text="{Binding StartTime,Mode=OneWay}"></TextBlock>
+                                    </StackPanel>
+                                    <Button Margin="4" Content="查询剩余启动时间" Command="{Binding QueryStartTimeCommand}"></Button>
+
+                                </StackPanel>
+                            </Border>
+                            <Border BorderThickness="2" BorderBrush="CadetBlue" Margin="4" Padding="4">
+
+                                <StackPanel>
+                                    <StackPanel Margin="4" Orientation="Horizontal">
+                                        <TextBlock>剩余停止时间：</TextBlock>
+                                        <TextBlock Text="{Binding StopTime,Mode=OneWay}"></TextBlock>
+                                    </StackPanel>
+                                    <Button Margin="4" Content="查询剩余停止时间" Command="{Binding QueryStopTimeCommand}"></Button>
+
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+
+                        <Border Grid.ColumnSpan="2" Grid.Row="1" BorderThickness="2" BorderBrush="CadetBlue" Margin="4" Padding="4">
+                            <StackPanel>
+                                <StackPanel Margin="4" Orientation="Horizontal">
+                                    <TextBlock>工作状态：</TextBlock>
+                                    <TextBlock Text="{Binding WorkStatus,Mode=OneWay}"></TextBlock>
+                                </StackPanel>
+                                <Button Margin="4" Content="工作状态查询" Command="{Binding QueryWorkStatusCommand}"></Button>
+
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <Button Margin="4" Content="开始控温" Command="{Binding ControlTempCommand}"></Button>
                 </StackPanel>
+            </Border>
+
+
+            <Border Grid.RowSpan="2" Grid.Column="1" BorderThickness="2" BorderBrush="CadetBlue" Margin="4" Padding="4">
                 <Grid>
+                    <Grid.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="White"> </Setter>
+                        </Style>
+                    </Grid.Resources>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0" Content="-" Command="{Binding DownTempCommand}"/>
-                    <Button Grid.Column="1" Content="设定" Command="{Binding SetTempCommand}"/>
-                    <Button Grid.Column="2" Content="+" Command="{Binding UpTempCommand}"/>
-                </Grid>
-            </StackPanel>
-            <StackPanel Grid.Row="1">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock>启动时间</TextBlock>
-                    <TextBox Width="50" InputScope="Number" Text="{Binding DelayStartMin,Mode=TwoWay}"></TextBox>
-                    <TextBlock>:</TextBlock>
-                    <TextBox Width="50" InputScope="Number" Text="{Binding DelayStartSec,Mode=TwoWay}"></TextBox>
-                </StackPanel>
-                <Button Content="延时启动" Command="{Binding DelayStartCommand}"></Button>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock>停止时间</TextBlock>
-                    <TextBox Width="50" InputScope="Number" Text="{Binding DelayStopMin,Mode=TwoWay}"></TextBox>
-                    <TextBlock>:</TextBlock>
-                    <TextBox Width="50" InputScope="Number" Text="{Binding DelayStopSec,Mode=TwoWay}"></TextBox>
-                </StackPanel>
-                <Button Content="延时停止" Command="{Binding DelayStopCommand}"></Button>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock>剩余启动时间：</TextBlock>
-                    <TextBlock Text="{Binding StartTime,Mode=OneWay}"></TextBlock>
-                </StackPanel>
-                <Button Content="查询剩余启动时间" Command="{Binding QueryStartTimeCommand}"></Button>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock>剩余停止时间：</TextBlock>
-                    <TextBlock Text="{Binding StopTime,Mode=OneWay}"></TextBlock>
-                </StackPanel>
-                <Button Content="查询剩余停止时间" Command="{Binding QueryStopTimeCommand}"></Button>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock>工作状态：</TextBlock>
-                    <TextBlock Text="{Binding WorkStatus,Mode=OneWay}"></TextBlock>
-                </StackPanel>
-                <Button Content="工作状态查询" Command="{Binding QueryWorkStatusCommand}"></Button>
-                <Button Content="开始控温" Command="{Binding ControlTempCommand}"></Button>
-            </StackPanel>
-            <Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" >
-                <local:CanvaseExpand x:Name="canvas" Height="200" Width="400" Background="Black" 
+                    <StackPanel Orientation="Horizontal" Margin="4">
+                        <TextBlock Foreground="Black" Text="温度显示密度（点数）："></TextBlock>
+                        <TextBox Text="{Binding TempCellectionCount,Mode=TwoWay}" Width="100" TextAlignment="Center"></TextBox>
+                        <Button Content="修改" Margin="4 0"></Button>
+                        <Button Content="Test" Margin="4 0" Command="{Binding MakeTempCommand}"></Button>
+                        <Button Content="减速" Margin="4 0" Command="{Binding SpeedDownCommand}"></Button>
+                        <Button Content="加速" Margin="4 0" Command="{Binding SpeedUpCommand}"></Button>
+                    </StackPanel>
+                    <local:CanvaseExpand x:Name="canvas" Grid.Row="1"
+                                         Height="400" Width="600" Background="Black" 
                                      CustomPoints="{Binding TempCellection,Mode=OneWay}">
-                    <Polyline Points="0 20 400  20 " Stroke="Red" StrokeThickness="0.3"/>
-                    <Polyline Points="0 40 400  40 " Stroke="Red" StrokeThickness="0.3"/>
-                    <Polyline Points="0 60 400  60 " Stroke="Red" StrokeThickness="0.3"/>
-                    <Polyline Points="0 80 400  80 " Stroke="Red" StrokeThickness="0.3"/>
-                    <Polyline Points="0 100 400 100 " Stroke="Red" StrokeThickness="0.3"/>
-                    <Polyline Points="0 120 400 120 " Stroke="Red" StrokeThickness="0.3"/>
-                    <Polyline Points="0 140 400 140 " Stroke="Red" StrokeThickness="0.3"/>
-                    <Polyline Points="0 160 400 160 " Stroke="Red" StrokeThickness="0.3"/>
-                    <Polyline Points="0 180 400 180 " Stroke="Red" StrokeThickness="0.3"/>
-                    <Polyline x:Name="tempLine" Stroke="Blue" StrokeThickness="0.5"></Polyline>
-                </local:CanvaseExpand>
-            </Grid>
+                        <TextBlock Text="(℃)" Canvas.Left="5" Canvas.Bottom="400"></TextBlock>
+                        <Polyline Points="0 40 600  40 " Stroke="Red" StrokeThickness="0.3"/>
+                        <TextBlock Text="100" Canvas.Left="5" Canvas.Bottom="360"></TextBlock>
+                        <Polyline Points="0 80   600  80 " Stroke="Red" StrokeThickness="0.3"/>
+                        <TextBlock Text="80" Canvas.Left="5" Canvas.Bottom="320"></TextBlock>
+                        <Polyline Points="0 120  600 120 " Stroke="Red" StrokeThickness="0.3"/>
+                        <TextBlock Text="70" Canvas.Left="5" Canvas.Bottom="280"></TextBlock>
+                        <Polyline Points="0 160  600 160 " Stroke="Red" StrokeThickness="0.3"/>
+                        <TextBlock Text="60" Canvas.Left="5" Canvas.Bottom="240"></TextBlock>
+                        <Polyline Points="0 200  600 200 " Stroke="Red" StrokeThickness="0.3"/>
+                        <TextBlock Text="50" Canvas.Left="5" Canvas.Bottom="200"></TextBlock>
+                        <Polyline Points="0 240  600 240 " Stroke="Red" StrokeThickness="0.3"/>
+                        <TextBlock Text="40" Canvas.Left="5" Canvas.Bottom="160"></TextBlock>
+                        <Polyline Points="0 280  600 280 " Stroke="Red" StrokeThickness="0.3"/>
+                        <TextBlock Text="30" Canvas.Left="5" Canvas.Bottom="120"></TextBlock>
+                        <Polyline Points="0 320  600 320 " Stroke="Red" StrokeThickness="0.3"/>
+                        <TextBlock Text="20" Canvas.Left="5" Canvas.Bottom="80"></TextBlock>
+                        <Polyline Points="0 360  600 360 " Stroke="Red" StrokeThickness="0.3"/>
+                        <TextBlock Text="10" Canvas.Left="5" Canvas.Bottom="40"></TextBlock>
+                        <Polyline x:Name="tempLine" Stroke="Blue" StrokeThickness="0.5"></Polyline>
+                        <TextBlock Text="0" Canvas.Left="5" Canvas.Bottom="0"></TextBlock>
+
+                        <TextBlock Text="时间轴" Canvas.Right="0" Canvas.Bottom="0"></TextBlock>
+                    </local:CanvaseExpand>
+                </Grid>
+            </Border>
+            
 
         </Grid>
     </Grid>

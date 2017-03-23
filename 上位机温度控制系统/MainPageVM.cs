@@ -301,6 +301,16 @@ namespace 上位机温度控制系统
             }
         }
 
+        private int _tempCellectionCount = 100;
+        public int TempCellectionCount
+        {
+            get
+            {
+                return _tempCellectionCount;
+            }
+            set { _tempCellectionCount = value; OnPropertyChanged(); }
+        }
+        
         private List<double> _tempCellection;
         public List<double> TempCellection
         {
@@ -418,9 +428,13 @@ namespace 上位机温度控制系统
                         ReadTempFloat = int.Parse(command.ControlVal2,System.Globalization.NumberStyles.AllowHexSpecifier);
 
                         var list = TempCellection;
-                        if (list.Count == 100)
+                        if (list.Count > TempCellectionCount)
                         {
-                            list.RemoveAt(0);
+                            for (int i = 0; i < list.Count- TempCellectionCount; i++)
+                            {
+                                list.RemoveAt(0);
+                            }
+                            
                         }
                         list.Add(ReadTempInt);
                         var newList = new List<double>();
@@ -677,6 +691,63 @@ namespace 上位机温度控制系统
             QueryStopTimeCommand = new Command(QueryStopTime);
 
             QueryWorkStatusCommand = new Command(QueryWorkStatus);
+
+            MakeTempCommand = new Command(MakeTemp);
+            SpeedDownCommand = new Command(SpeedDown);
+            SpeedUpCommand = new Command(SpeedUp);
         }
+        private double speed = 100;
+        public ICommand SpeedDownCommand { get; set; }
+        public ICommand SpeedUpCommand
+        {
+            get;set;
+        }
+        public void SpeedUp()
+        {
+            speed /= 10;
+        }
+        public void SpeedDown()
+        {
+            speed *= 10;
+        }
+        public ICommand MakeTempCommand { get; set; }
+
+        Random rand = new Random();
+        public void MakeTemp()
+        {
+            Task.Run(async () =>
+            {
+                var angel = 0;
+                while (true)
+                {
+                    var list = TempCellection;
+                    if (list.Count > TempCellectionCount)
+                    {
+                        for (int i = 0; i <= list.Count - TempCellectionCount; i++)
+                        {
+                            list.RemoveAt(0);
+                        }
+
+                    }
+
+                    list.Add(Math.Sin(2*Math.PI*angel/360) * 50 + 50);
+                    angel +=1;
+                    if (angel >= 360)
+                    {
+                        angel = 0;
+                    }
+                    var newList = new List<double>();
+                    foreach (var item in list)
+                    {
+                        newList.Add(item);
+                    }
+                    TempCellection = newList;
+                    await Task.Delay(TimeSpan.FromMilliseconds(speed));
+
+                }
+            }
+            );
+        }
+
     }
 }
