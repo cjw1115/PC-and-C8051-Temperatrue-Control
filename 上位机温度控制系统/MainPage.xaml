@@ -23,7 +23,7 @@
             <Border BorderThickness="2" BorderBrush="CadetBlue" Margin="4" Padding="4">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock VerticalAlignment="Center" Text="端口号:"></TextBlock>
-                    <ComboBox ItemsSource="{Binding ComList,Mode=OneWay}" Width="50" SelectedValue="{Binding CurrentCom,Mode=OneWayToSource}">
+                    <ComboBox ItemsSource="{Binding ComList,Mode=OneWay}" Width="80" SelectedValue="{Binding CurrentCom,Mode=TwoWay}">
                     </ComboBox>
                     <TextBlock VerticalAlignment="Center" Text="波特率:"></TextBlock>
                     <TextBox Width="50" Text="{Binding BaudRate,Mode=TwoWay}">
@@ -124,7 +124,7 @@
                         <TextBlock Width="50" Text="{Binding ReadTempFloat,Mode=OneWay}" TextAlignment="Center" Background="Black" Foreground="Red"></TextBlock>
 
                     </StackPanel>
-                    <Button Margin="4" Content="温度查询" Command="{Binding QueryTempCommand}"></Button>
+                    <Button Margin="4" Content="温度查询(A8)" Command="{Binding QueryTempCommand}" IsCancel="True"></Button>
                     <StackPanel Orientation="Horizontal" Margin="4">
                         <TextBlock Text="设置温度："></TextBlock>
                         <TextBox Width="50" Text="{Binding SetTempInt,Mode=TwoWay}"   TextAlignment="Center" Background="Black" Foreground="Red"></TextBox>
@@ -140,9 +140,9 @@
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <Button Grid.Column="0" Content="-" Command="{Binding DownTempCommand}"/>
-                        <Button Grid.Column="1" Content="设定" Command="{Binding SetTempCommand}"/>
-                        <Button Grid.Column="2" Content="+" Command="{Binding UpTempCommand}"/>
+                        <Button Grid.Column="0" Content="-(A2)" Command="{Binding DownTempCommand}"/>
+                        <Button Grid.Column="1" Content="设定(A0)" Command="{Binding SetTempCommand}"/>
+                        <Button Grid.Column="2" Content="+(A1)" Command="{Binding UpTempCommand}"/>
                     </Grid>
                 </StackPanel>
             </Border>
@@ -166,7 +166,7 @@
                                         <TextBlock>:</TextBlock>
                                         <TextBox Width="50" InputScope="Number" Text="{Binding DelayStartSec,Mode=TwoWay}"></TextBox>
                                     </StackPanel>
-                                    <Button Margin="4" Content="延时启动" Command="{Binding DelayStartCommand}"></Button>
+                                    <Button Margin="4" Content="延时启动(A4)" Command="{Binding DelayStartCommand}"></Button>
                                 </StackPanel>
                             </Border>
                             <Border BorderThickness="2" BorderBrush="CadetBlue" Margin="4" Padding="4">
@@ -177,7 +177,7 @@
                                         <TextBlock>:</TextBlock>
                                         <TextBox Width="50" InputScope="Number" Text="{Binding DelayStopSec,Mode=TwoWay}"></TextBox>
                                     </StackPanel>
-                                    <Button Margin="4" Content="延时停止" Command="{Binding DelayStopCommand}"></Button>
+                                    <Button Margin="4" Content="延时停止(A5)" Command="{Binding DelayStopCommand}"></Button>
 
                                 </StackPanel>
                             </Border>
@@ -190,7 +190,7 @@
                                         <TextBlock>剩余启动时间：</TextBlock>
                                         <TextBlock Text="{Binding StartTime,Mode=OneWay}"></TextBlock>
                                     </StackPanel>
-                                    <Button Margin="4" Content="查询剩余启动时间" Command="{Binding QueryStartTimeCommand}"></Button>
+                                    <Button Margin="4" Content="查询剩余启动时间(AA)" Command="{Binding QueryStartTimeCommand}"></Button>
 
                                 </StackPanel>
                             </Border>
@@ -201,7 +201,7 @@
                                         <TextBlock>剩余停止时间：</TextBlock>
                                         <TextBlock Text="{Binding StopTime,Mode=OneWay}"></TextBlock>
                                     </StackPanel>
-                                    <Button Margin="4" Content="查询剩余停止时间" Command="{Binding QueryStopTimeCommand}"></Button>
+                                    <Button Margin="4" Content="查询剩余停止时间(AB)" Command="{Binding QueryStopTimeCommand}"></Button>
 
                                 </StackPanel>
                             </Border>
@@ -213,13 +213,13 @@
                                     <TextBlock>工作状态：</TextBlock>
                                     <TextBlock Text="{Binding WorkStatus,Mode=OneWay}"></TextBlock>
                                 </StackPanel>
-                                <Button Margin="4" Content="工作状态查询" Command="{Binding QueryWorkStatusCommand}"></Button>
+                                <Button Margin="4" Content="工作状态查询(AE)" Command="{Binding QueryWorkStatusCommand}"></Button>
 
                             </StackPanel>
                         </Border>
                     </Grid>
 
-                    <Button Margin="4" Content="开始控温" Command="{Binding ControlTempCommand}"></Button>
+                    <Button Margin="4" Content="开始控温(A3)" Command="{Binding ControlTempCommand}"></Button>
                 </StackPanel>
             </Border>
 
@@ -265,7 +265,7 @@
                         <TextBlock Text="20" Canvas.Left="5" Canvas.Bottom="80"></TextBlock>
                         <Polyline Points="0 360  600 360 " Stroke="Red" StrokeThickness="0.3"/>
                         <TextBlock Text="10" Canvas.Left="5" Canvas.Bottom="40"></TextBlock>
-                        <Polyline x:Name="tempLine" Stroke="Blue" StrokeThickness="0.5"></Polyline>
+                        <Polyline x:Name="tempLine" Stroke="Blue" StrokeThickness="2"></Polyline>
                         <TextBlock Text="0" Canvas.Left="5" Canvas.Bottom="0"></TextBlock>
 
                         <TextBlock Text="时间轴" Canvas.Right="0" Canvas.Bottom="0"></TextBlock>

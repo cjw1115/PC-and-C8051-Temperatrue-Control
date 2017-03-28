@@ -59,11 +59,10 @@ uchar ADCConvert(void)	//���ݲɼ�����
     x = ADC;		//��ȡA/Dת������
     return x;		//�����¶����ݲɼ�����
 }
-int Temperature(uchar x)	//�¶ȼ��㺯��
+void Temperature(uchar x)	//�¶ȼ��㺯��
 {
-	 int  y;		//�����������ż�������
-    y = x*100/255;	//��������10�����¶���ֵ
-    return y;		//��������10�����¶���ֵ
+    temperatureInt= x*100/255;
+		temperatureFloat=0;
 }
 //==============�ɼ����ݣ���ȡ�¶�==================//
 
@@ -71,10 +70,10 @@ int Temperature(uchar x)	//�¶ȼ��㺯��
 void Temperature_measure(void)
 {
     uchar a;
-    int b;
+  
     a=ADCConvert();//�¶����ݲɼ���
-    b=Temperature(a);//��������temperature
-		temperatureInt=b;
+    Temperature(a);//��������temperature
+		//temperatureInt=b;
 }
 
        
@@ -87,8 +86,6 @@ void pid_control(void)
 	float error_sumM;
 	float error_sumL;
 
-	Temperature_measure();
-	//PostTemp();
 	error=temperature_set-temperatureInt;
 	if (error>2)
 		{
@@ -206,7 +203,7 @@ void Parse()
 		case 0xA5://delay end time set
 			delayStopMin=rece_buf[1];
 			delayStopSec=rece_buf[2];
-			allDelayStopTime=delayStopMin*60+delayStartSec;
+			allDelayStopTime=delayStopMin*60+delayStopSec;
 			isDelayStop=1;
 
 		break;
@@ -336,6 +333,9 @@ void main()
 	Timer_Init();
 	while(1)
 	{
+		Temperature_measure();
+		Temperature_display(1);
+
 		if(isControlling==1)
 		{
 			pid_control();
@@ -344,16 +344,15 @@ void main()
 			DAC=128;
 
 			
-		Temperature_measure();
-		Temperature_display(1);
-		//PostTemp();
+		
+		//
 	}
 }
 void PostTemp(void)
 {
 	tran_buf[0]=0xA8;
 	tran_buf[1]=temperatureInt;
-	tran_buf[2]=00;
+	tran_buf[2]=temperatureFloat;
 
 	data_tran();
 }   

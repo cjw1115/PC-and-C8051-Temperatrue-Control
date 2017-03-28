@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -67,25 +68,45 @@ namespace 上位机温度控制系统
         {
             try
             {
+                var comIndex = 0;
                 if (IsOpen == false)
                 {
-                    _port = new SerialPort();
-                    _port.Parity = Parity.None;
-
-                    _port.PortName = CurrentCom;
-                    _port.BaudRate = BaudRate;
-
-                    _port.Open();
-                    _cts = new CancellationTokenSource();
-                    _parseCts = new CancellationTokenSource();
-                    Task.Run(() =>
+                    while (comIndex < ComList.Count)
                     {
-                        ParseCommand();
-                    },_parseCts.Token);
-                    Task.Run(()=> {
-                        Recieve();
-                    },_cts.Token);
-                    IsOpen = true;
+                        try
+                        {
+                            _port = new SerialPort();
+                            _port.Parity = Parity.None;
+
+                            _port.PortName = ComList[comIndex];
+                            _port.BaudRate = BaudRate;
+
+                            _port.Open();
+                            CurrentCom = ComList[comIndex];
+
+                            _cts = new CancellationTokenSource();
+                            _parseCts = new CancellationTokenSource();
+                            Task.Run(() =>
+                            {
+                                ParseCommand();
+                            }, _parseCts.Token);
+                            Task.Run(() => {
+                                Recieve();
+                            }, _cts.Token);
+                            IsOpen = true;
+                            break;
+                        }
+                        catch (IOException io)
+                        {
+                            comIndex++;
+                        }
+                    }
+                    if (!IsOpen)
+                    {
+                        MainPage.Notify("没有可用的端口");
+                    }
+
+                    
                 }
                 else
                 {
@@ -95,6 +116,7 @@ namespace 上位机温度控制系统
 
                     IsOpen = false;
                 }
+
 
             }
             catch(Exception e)
@@ -261,6 +283,13 @@ namespace 上位机温度控制系统
 
         private void _timer_Tick(object sender, EventArgs e)
         {
+            if(InputCommand.ControlCode != "A8")
+            {
+                IsContinuesExcute = false;
+
+                _timer.Stop();
+                return;
+            }
             if (IsOpen&& IsContinuesExcute)
             {
                 _port.Write(_buffer, 0, _buffer.Length);
